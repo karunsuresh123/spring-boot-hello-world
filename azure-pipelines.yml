@@ -9,7 +9,6 @@ trigger:
       - "*"
 
 jobs:
-  # 1st JOB
   - job: build_example
     displayName: These tasks will run using a custom image
 
@@ -19,6 +18,22 @@ jobs:
       endpoint: docker-hts.repo.east1.ncloud.netapp.com
 
     steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Listing current directory:"
+          ls -la
+          echo "Listing /azp/_work/_tool/ directory:"
+          ls -la /azp/_work/_tool/
+          
+    - task: AdvancedSecurity-Codeql-Init@1
+      inputs:
+        languages: 'java'
+        querysuite: 'code-scanning'
+        codeqltoolsdirectory: '/azp/_work/_tool/CodeQL'
+        loglevel: '1'
+
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom.xml'
@@ -29,15 +44,9 @@ jobs:
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         goals: 'package'
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: 'ls'
-    - task: AdvancedSecurity-Codeql-Init@1
-      inputs:
-        languages: 'javascript'
-        querysuite: 'code-scanning'
-        codeqltoolsdirectory: '/azp/_work/_tool/'
+
+    - task: AdvancedSecurity-Codeql-Analyze@1
+
 
 
 
