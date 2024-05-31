@@ -15,7 +15,7 @@ jobs:
 
     pool: Custom
     container: 
-      image: docker-hts.repo.east1.ncloud.netapp.com/codeql-v/codeql-agent:latest
+      image: docker-hts.repo.east1.ncloud.netapp.com/codeql/codeql-agent:latest
       endpoint: docker-hts.repo.east1.ncloud.netapp.com
 
     steps:
